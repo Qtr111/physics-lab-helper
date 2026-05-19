@@ -32,37 +32,50 @@
         <h1>🔬 物理实验助手</h1>
         <p>你的专属AI物理实验导师已就位！</p>
         <p>👆 点击右下角聊天按钮开始对话</p>
-        <br>
-        <p><strong>可以问我：</strong></p>
-        <ul>
-            <li>实验设计与方案</li>
-            <li>数据处理与分析</li>
-            <li>误差来源分析</li>
-            <li>实验注意事项</li>
-        </ul>
     </div>
 
-    <!-- 引入Chat SDK -->
-    <script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/latest/libs/cn/index.js"></script>
+    <!-- 备选CDN 1: unpkg -->
+    <script src="https://unpkg.com/@coze/chat-web-sdk@1.1.0/dist/index.umd.js"></script>
+    
+    <!-- 备选CDN 2: jsdelivr -->
+    <script src="https://cdn.jsdelivr.net/npm/@coze/chat-web-sdk@1.1.0/dist/index.umd.js"></script>
+    
+    <!-- 备选CDN 3: 官方CDN -->
+    <script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.0.0/libs/cn/index.js"></script>
 
     <script>
-        new CozeWebSDK.WebChatClient({
-            config: {
-                bot_id: '7640388575573852169',  // 你的Bot ID
-            },
-            auth: {
-                type: 'unauth',  // 无鉴权模式测试
-            },
-            componentProps: {
-                title: '物理实验助手 🔬',
-            },
-            ui: {
-                chatBot: {
-                    title: '物理实验助手 🔬',
-                    uploadable: true,
-                }
+        // 检查哪个CDN加载成功了
+        console.log('检查SDK是否加载...');
+        
+        // 方法1: 检查 CozeWebSDK
+        if (typeof CozeWebSDK !== 'undefined') {
+            console.log('✅ CozeWebSDK 已加载 (方式1)');
+            initChat(CozeWebSDK);
+        } 
+        // 方法2: 检查 window.CozeWebSDK
+        else if (window.CozeWebSDK) {
+            console.log('✅ CozeWebSDK 已加载 (方式2)');
+            initChat(window.CozeWebSDK);
+        }
+        // 方法3: 检查全局变量
+        else {
+            console.log('❌ 所有CDN都没加载成功');
+            console.log('window对象下的Coze相关变量:', Object.keys(window).filter(k => k.toLowerCase().includes('coze')));
+        }
+
+        function initChat(Coze) {
+            try {
+                new Coze.WebChatClient({
+                    bot_id: '7640388575573852169',
+                    componentProps: {
+                        title: '物理实验助手 🔬',
+                    }
+                });
+                console.log('✅ 聊天窗口初始化成功！');
+            } catch (e) {
+                console.error('❌ 初始化失败:', e);
             }
-        });
+        }
     </script>
 </body>
 </html>
