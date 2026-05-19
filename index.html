@@ -1,12 +1,52 @@
 <!DOCTYPE html>
 <html>
-<body style="margin:0;padding:0;background:#f5f5f5;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>物理实验助手</title>
+</head>
+<body style="margin:0;padding:0;background:#f5f7fa;font-family:sans-serif;">
 
-<div onclick="alert('按钮点击成功！')" style="position:fixed;bottom:30px;right:30px;width:60px;height:60px;background:purple;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:30px;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,0.3);z-index:9999;">💬</div>
+    <!-- 悬浮按钮 -->
+    <div onclick="toggleChat()" style="position:fixed;bottom:30px;right:30px;width:64px;height:64px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:30px;cursor:pointer;box-shadow:0 6px 25px rgba(102,126,234,0.4);z-index:9999;">
+        💬
+    </div>
 
-<script>
-console.log('JavaScript已加载');
-</script>
+    <!-- 聊天对话框 - 默认隐藏 -->
+    <div id="chatBox" style="position:fixed;bottom:110px;right:30px;width:420px;height:650px;background:white;border-radius:18px;box-shadow:0 12px 50px rgba(0,0,0,0.25);z-index:9998;display:none;overflow:hidden;">
+        
+        <!-- 标题栏 -->
+        <div style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-weight:600;font-size:17px;">🔬 物理实验助手</span>
+            <button onclick="toggleChat()" style="background:rgba(255,255,255,0.25);border:none;color:white;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;">×</button>
+        </div>
+        
+        <!-- 智能体iframe -->
+        <iframe src="https://code.coze.cn/p/7640388575573852169/preview" style="width:100%;height:calc(100% - 65px);border:none;"></iframe>
+    </div>
+
+    <script>
+        var chatBox = document.getElementById('chatBox');
+        
+        function toggleChat() {
+            if (chatBox.style.display === 'block') {
+                chatBox.style.display = 'none';
+            } else {
+                chatBox.style.display = 'block';
+            }
+        }
+    </script>
+
+    <!-- 移动端适配 -->
+    <style>
+        @media (max-width: 500px) {
+            #chatBox {
+                width: calc(100% - 30px) !important;
+                height: 80vh !important;
+                right: 15px !important;
+            }
+        }
+    </style>
 
 </body>
 </html>
