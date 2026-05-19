@@ -5,172 +5,123 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>物理实验助手</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            background: #f5f7fa;
-            min-height: 100vh;
-        }
-
-        /* ========== 悬浮按钮 ========== */
-        .chat-float-btn {
+        /* 悬浮按钮 */
+        #floatBtn {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            width: 64px;
-            height: 64px;
+            width: 60px;
+            height: 60px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
             z-index: 9999;
-            transition: all 0.3s ease;
-            font-size: 30px;
-        }
-        .chat-float-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.5);
+            font-size: 28px;
         }
 
-        /* ========== 对话框 ========== */
-        .chat-modal {
+        /* 对话框 - 默认隐藏 */
+        #chatBox {
             position: fixed;
             bottom: 110px;
             right: 30px;
-            width: 420px;
-            height: 650px;
+            width: 400px;
+            height: 600px;
             background: white;
-            border-radius: 18px;
-            box-shadow: 0 12px 50px rgba(0,0,0,0.25);
+            border-radius: 16px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.3);
             z-index: 9998;
-            display: none;
+            display: none; /* 关键：默认隐藏 */
             overflow: hidden;
         }
-        .chat-modal.active {
-            display: block;
-            animation: popUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        @keyframes popUp {
-            from {
-                opacity: 0;
-                transform: scale(0.9) translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
+
+        /* 显示时的样式 */
+        #chatBox.show {
+            display: block !important;
         }
 
-        /* 对话框标题栏 */
+        /* 标题栏 */
         .chat-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 18px 22px;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-family: sans-serif;
         }
-        .chat-header h3 {
-            font-size: 17px;
-            font-weight: 600;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-        .close-chat {
-            background: rgba(255,255,255,0.25);
+        .close-btn {
+            background: rgba(255,255,255,0.2);
             border: none;
             color: white;
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s;
-        }
-        .close-chat:hover {
-            background: rgba(255,255,255,0.35);
+            font-size: 18px;
         }
 
         /* iframe */
-        .chat-frame {
+        #chatBox iframe {
             width: 100%;
-            height: calc(100% - 65px);
+            height: calc(100% - 55px);
             border: none;
         }
 
-        /* 移动端适配 */
+        /* 手机适配 */
         @media (max-width: 500px) {
-            .chat-modal {
-                width: calc(100% - 30px);
-                height: 80vh;
-                right: 15px;
-                bottom: 90px;
+            #chatBox {
+                width: calc(100% - 40px);
+                height: 70vh;
+                right: 20px;
             }
-            .chat-float-btn {
+            #floatBtn {
                 right: 20px;
                 bottom: 20px;
-                width: 56px;
-                height: 56px;
-                font-size: 26px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- 悬浮聊天按钮 -->
-    <div class="chat-float-btn" onclick="openChat()" title="点击对话">
-        💬
-    </div>
 
-    <!-- 聊天对话框 -->
-    <div class="chat-modal" id="chatModal">
+    <!-- 悬浮按钮 -->
+    <div id="floatBtn" onclick="toggleChat()">💬</div>
+
+    <!-- 对话框 -->
+    <div id="chatBox">
         <div class="chat-header">
-            <h3>🔬 物理实验助手</h3>
-            <button class="close-chat" onclick="closeChat()">×</button>
+            <span><strong>🔬 物理实验助手</strong></span>
+            <button class="close-btn" onclick="toggleChat()">×</button>
         </div>
-        <iframe 
-            class="chat-frame"
-            src="https://code.coze.cn/p/7640388575573852169/preview"
-            loading="lazy"
-        ></iframe>
+        <iframe src="https://code.coze.cn/p/7640388575573852169/preview"></iframe>
     </div>
 
     <script>
-        const chatModal = document.getElementById('chatModal');
-
-        function openChat() {
-            chatModal.classList.add('active');
-        }
-
-        function closeChat() {
-            chatModal.classList.remove('active');
-        }
-
-        // 点击按钮切换
-        document.querySelector('.chat-float-btn').addEventListener('click', function(e) {
-            e.stopPropagation();
-            if (chatModal.classList.contains('active')) {
-                closeChat();
+        // 最简单的切换函数
+        function toggleChat() {
+            var chatBox = document.getElementById('chatBox');
+            
+            // 直接切换显示/隐藏
+            if (chatBox.style.display === 'block') {
+                chatBox.style.display = 'none';
             } else {
-                openChat();
+                chatBox.style.display = 'block';
             }
-        });
+            
+            // 控制台输出，方便调试
+            console.log('点击了！当前状态:', chatBox.style.display);
+        }
 
-        // 点击其他地方关闭
-        document.addEventListener('click', function(e) {
-            if (!chatModal.contains(e.target) && 
-                !e.target.closest('.chat-float-btn')) {
-                closeChat();
-            }
-        });
+        // 页面加载完成后输出日志
+        window.onload = function() {
+            console.log('页面加载完成');
+            console.log('悬浮按钮:', document.getElementById('floatBtn'));
+            console.log('对话框:', document.getElementById('chatBox'));
+        }
     </script>
+
 </body>
 </html>
