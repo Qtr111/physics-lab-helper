@@ -5,77 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>物理实验助手 🔬</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 20px;
+        }
+        .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
             color: white;
+            padding: 20px;
+            text-align: center;
         }
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
         }
-        .card {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            padding: 30px;
-            border-radius: 20px;
-            margin-bottom: 20px;
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        iframe {
+            width: 100%;
+            height: calc(100vh - 80px);
+            border: none;
+            display: block;
         }
     </style>
 </head>
 <body>
-    <div class="card">
+    <div class="header">
         <h1>🔬 物理实验助手</h1>
-        <p>你的专属AI物理实验导师已就位！</p>
-        <p>👆 点击右下角聊天按钮开始对话</p>
+        <p>你的专属AI物理实验导师</p>
     </div>
-
-    <!-- 备选CDN 1: unpkg -->
-    <script src="https://unpkg.com/@coze/chat-web-sdk@1.1.0/dist/index.umd.js"></script>
     
-    <!-- 备选CDN 2: jsdelivr -->
-    <script src="https://cdn.jsdelivr.net/npm/@coze/chat-web-sdk@1.1.0/dist/index.umd.js"></script>
-    
-    <!-- 备选CDN 3: 官方CDN -->
-    <script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.0.0/libs/cn/index.js"></script>
-
-    <script>
-        // 检查哪个CDN加载成功了
-        console.log('检查SDK是否加载...');
-        
-        // 方法1: 检查 CozeWebSDK
-        if (typeof CozeWebSDK !== 'undefined') {
-            console.log('✅ CozeWebSDK 已加载 (方式1)');
-            initChat(CozeWebSDK);
-        } 
-        // 方法2: 检查 window.CozeWebSDK
-        else if (window.CozeWebSDK) {
-            console.log('✅ CozeWebSDK 已加载 (方式2)');
-            initChat(window.CozeWebSDK);
-        }
-        // 方法3: 检查全局变量
-        else {
-            console.log('❌ 所有CDN都没加载成功');
-            console.log('window对象下的Coze相关变量:', Object.keys(window).filter(k => k.toLowerCase().includes('coze')));
-        }
-
-        function initChat(Coze) {
-            try {
-                new Coze.WebChatClient({
-                    bot_id: '7640388575573852169',
-                    componentProps: {
-                        title: '物理实验助手 🔬',
-                    }
-                });
-                console.log('✅ 聊天窗口初始化成功！');
-            } catch (e) {
-                console.error('❌ 初始化失败:', e);
-            }
-        }
-    </script>
+    <!-- 直接嵌入扣子智能体分享链接 -->
+    <iframe src="https://code.coze.cn/p/7640388575573852169/preview"></iframe>
 </body>
 </html>
